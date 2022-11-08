@@ -20,6 +20,6 @@ public class ProductsTest
         var result = await response.Content.ReadAsStringAsync();
         var products = JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
 
-        Assert.IsType<OkObjectResult>(result);
+        Assert.Equal("Chips", products.First().Name);
     }
 }
