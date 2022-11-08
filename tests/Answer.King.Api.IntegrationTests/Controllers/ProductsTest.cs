@@ -22,4 +22,17 @@ public class ProductsTest
 
         Assert.Equal("Chips", products.First().Name);
     }
+
+    [TestMethod]
+    public async Task GetSpecificProduct_Returns()
+    {
+        var webAppFactory = new WebApplicationFactory<Program>();
+        var httpClient = webAppFactory.CreateDefaultClient();
+
+        var response = await httpClient.GetAsync("/api/products/8d9142c2-96a0-4808-b00a-c43aee40293f");
+        var result = await response.Content.ReadAsStringAsync();
+        var products = JsonConvert.DeserializeObject<Product>(result);
+
+        Assert.Equal("Fish", products.Name);
+    }
 }
