@@ -47,8 +47,8 @@ jobs:
           dotnet restore
           dotnet build -c Release --no-restore
           coverlet .\CovExample.Tests\bin\Debug\net6.0\CovExample.Tests.dll
-            --target "dotnet" 
-            --targetargs "test --no-build"
-            -f=opencover 
-            -o="coverage.xml"
+              --target "dotnet" 
+              --targetargs "test --no-build"
+              -f=opencover 
+              -o="coverage.xml"
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
