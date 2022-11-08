@@ -43,7 +43,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"kirbyAlasdairAnswer_AnswerKing-CS" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
+          dotnet sonarscanner begin /k:"kirbyAlasdairAnswer_AnswerKing-CS" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=coverage.xml
           dotnet restore
           dotnet build -c Release --no-restore
           coverlet .\CovExample.Tests\bin\Debug\net6.0\CovExample.Tests.dll
