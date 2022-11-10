@@ -2,7 +2,7 @@ name: Build Docker
 
 on:
   workflow_run:
-    workflows: ["Test", "Static Analysisa"]
+    workflows: ["Stage One"]
     types:
       - completed
 jobs:
