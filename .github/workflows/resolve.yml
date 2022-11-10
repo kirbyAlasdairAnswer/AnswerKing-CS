@@ -6,9 +6,34 @@ on:
     types:
       - completed
 jobs:
+  was-success:
+    name: Workflow was successfull
+    runs-on: ubuntu-latest
+    steps:
+      - name: success job
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        run: echo "success"
+  
+  was-failure:
+    name: Workflow was failure
+    runs-on: ubuntu-latest
+    steps:
+      - name: success job
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
+        run: echo "failure"
+        
   push-to-registry:
     name: Push to Docker Hub
     runs-on: ubuntu-latest
+    needs: [was-success]
     steps:
       - name: check out repo
         uses: actions/checkout@v3
+        
+  notify:
+    name: Notify via Slack
+    runs-on: ubuntu-latest
+    needs: [was-failure]
+    steps:
+      - name: on failure
+        run: echo "failure"
