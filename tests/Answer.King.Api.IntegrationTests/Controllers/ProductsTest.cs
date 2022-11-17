@@ -22,4 +22,17 @@ public class ProductsTest
 
         Assert.Equal("Chips", products.First().Name);
     }
+
+    [TestMethod]
+    public async Task GetProduct_Returns ()
+    {
+        var webAppFactory = new WebApplicationFactory<Program>();
+        var httpClient = webAppFactory.CreateDefaultClient();
+
+        var response = await httpClient.GetAsync("/api/products/1");
+        var result = await response.Content.ReadAsStringAsync();
+        var products = JsonConvert.DeserializeObject<Product>(result);
+
+        Assert.Equal("Chips", products.Name);
+    }
 }
