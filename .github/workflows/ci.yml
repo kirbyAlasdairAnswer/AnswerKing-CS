@@ -69,6 +69,14 @@ jobs:
       with:
         recreate: true
         path: code-coverage-results.md
+    
+    - name: Add Test passed comment
+      uses: dorny/test-reporter@v1
+      with:
+        artifact: test-results            # artifact name
+        name: .Net Tests                  # Name of the check run which will be created
+        path: '*.xml'                     # Path to test results (inside artifact .zip)
+        reporter: dotnet-trx
         
   analysis:
     name: Build and analyze
