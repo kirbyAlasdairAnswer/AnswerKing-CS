@@ -72,7 +72,7 @@ jobs:
       uses: dorny/test-reporter@v1
       with:
         name: .Net Tests
-        path: "**/test-results.trx"
+        path: "coverage/test-results.trx"
         reporter: dotnet-trx
         
   analysis:
