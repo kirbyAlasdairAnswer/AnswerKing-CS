@@ -22,17 +22,4 @@ public class ProductsTest
 
         Assert.Equal("Chips", products.First().Name);
     }
-
-    [TestMethod]
-    public async Task Fail ()
-    {
-        var webAppFactory = new WebApplicationFactory<Program>();
-        var httpClient = webAppFactory.CreateDefaultClient();
-
-        var response = await httpClient.GetAsync("/api/products");
-        var result = await response.Content.ReadAsStringAsync();
-        var products = JsonConvert.DeserializeObject<IEnumerable<Product>>(result);
-
-        Assert.Equal("Cps", products.First().Name);
-    }
 }
