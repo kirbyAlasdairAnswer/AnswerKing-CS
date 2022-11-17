@@ -73,7 +73,6 @@ jobs:
     - name: Add Test passed comment
       uses: dorny/test-reporter@v1
       with:
-        artifact: test-results
         name: .Net Tests
         path: "**/test-results.trx"
         reporter: dotnet-trx
