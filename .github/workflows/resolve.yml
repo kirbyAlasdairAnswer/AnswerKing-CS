@@ -13,7 +13,7 @@ jobs:
       - name: success job
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
         run: echo "success"
-    if: github.event_name = 'pull_request'
+    if: github.event_name == 'pull_request'
   
   was-failure:
     name: Workflow was failure
@@ -22,7 +22,7 @@ jobs:
       - name: success job
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: echo "failure"
-    if: github.event_name = 'pull_request'
+    if: github.event_name == 'pull_request'
         
   push-to-registry:
     name: Push to Docker Hub
