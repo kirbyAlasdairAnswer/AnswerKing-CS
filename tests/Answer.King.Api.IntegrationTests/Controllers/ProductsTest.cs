@@ -29,7 +29,7 @@ public class ProductsTest
         var webAppFactory = new WebApplicationFactory<Program>();
         var httpClient = webAppFactory.CreateDefaultClient();
 
-        var response = await httpClient.GetAsync("/api/products/1");
+        var response = await httpClient.GetAsync("/api/products/89828e46-6cff-438f-be1a-6fa9355cfe24");
         var result = await response.Content.ReadAsStringAsync();
         var products = JsonConvert.DeserializeObject<Product>(result);
 
