@@ -80,7 +80,7 @@ jobs:
       uses: marocchino/sticky-pull-request-comment@v2
       if: github.event_name == 'pull_request'
       with:
-        message: Tests run with ${{ steps.report-tests.outputs.passed }} and ${{ steps.report-tests.outputs.failed }} failed in ${{ steps.report-tests.outputs.time }}ms.
+        message: Tests run with ${{ steps.report-tests.outputs.passed }} passed and ${{ steps.report-tests.outputs.failed }} failed in ${{ steps.report-tests.outputs.time }}ms.
         
   analysis:
     name: Build and analyze
