@@ -86,19 +86,6 @@ jobs:
           path: .\.sonar\scanner
           key: ${{ runner.os }}-sonar-scanner
           restore-keys: ${{ runner.os }}-sonar-scanner
-      - name: cache nuget
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.nuget/packages
-            !~/.nuget/packages/unwanted
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v3
-        with:
-          global-json-file: global.json
       - name: Install SonarCloud scanners
         run: |
           dotnet tool install --global dotnet-sonarscanner
