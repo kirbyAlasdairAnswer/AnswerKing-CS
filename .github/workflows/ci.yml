@@ -63,7 +63,7 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: .Net Tests
-          path: "**.trx"
+          path: "*.trx"
           reporter: dotnet-trx
 
       - name: Add Test Result PR Comment
