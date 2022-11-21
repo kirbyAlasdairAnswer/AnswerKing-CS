@@ -55,7 +55,7 @@ jobs:
         with:
           name: .Net Tests
           artifact: test-results
-          path: "*.trx"
+          path: ".TestResults/*.trx"
           reporter: dotnet-trx
 
       - name: Add Test Result PR Comment
