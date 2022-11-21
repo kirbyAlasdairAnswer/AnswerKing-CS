@@ -54,6 +54,10 @@ jobs:
         with:
           name: test-results
           
+      - name: ls
+        run: |
+          ls -r
+          
       - name: Report Tests
         id: report-tests
         uses: dorny/test-reporter@v1
