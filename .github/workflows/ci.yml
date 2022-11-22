@@ -129,6 +129,7 @@ jobs:
           path: ./TestResults
       
       - name: restructure
+        continue-on-error: true
         run: |
           mkdir temp/
           mkdir temp/1/
