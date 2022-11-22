@@ -54,6 +54,10 @@ jobs:
         with:
           name: test-results
           path: ./TestResults
+      
+      - name: look
+        run: |
+          ls
           
       - name: Report Tests
         id: report-tests
