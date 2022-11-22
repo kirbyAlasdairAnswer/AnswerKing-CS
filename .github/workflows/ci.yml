@@ -65,7 +65,6 @@ jobs:
         id: report-tests
         uses: dorny/test-reporter@v1
         with:
-          artifact: test-results
           name: .Net Tests
           path: "./TestResults.*.trx"
           reporter: dotnet-trx
