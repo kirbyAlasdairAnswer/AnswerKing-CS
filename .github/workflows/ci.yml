@@ -58,6 +58,8 @@ jobs:
       - name: look
         run: |
           ls
+          cd TestResults/
+          ls
           
       - name: Report Tests
         id: report-tests
@@ -65,7 +67,7 @@ jobs:
         with:
           artifact: test-results
           name: .Net Tests
-          path: "*.trx"
+          path: "./TestResults.*.trx"
           reporter: dotnet-trx
 
       - name: Add Test Result PR Comment
