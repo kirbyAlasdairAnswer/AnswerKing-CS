@@ -151,7 +151,7 @@ jobs:
           ls
           cd temp/1/
           ls
-          cd ./
+          cd /
           dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.flex.cobertura.reportPaths=./temp/1/coverage.cobertura.xml
           dotnet build -c Release --no-restore
           dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
