@@ -136,9 +136,7 @@ jobs:
             mv TestResults/**/coverage.cobertura.xml temp/1/
             mv TestResults/**/coverage.cobertura.xml temp/2/
             mv TestResults/**/coverage.cobertura.xml temp/3/
-            cd ..
-            ls
-            ls temp -R
+            touch needed.as
 
         - name: Build and analyze
           env:
