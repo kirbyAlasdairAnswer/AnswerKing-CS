@@ -130,6 +130,7 @@ jobs:
       
       - name: restructure
         run: |
+          mkdir temp/
           mkdir temp/1/
           mkdir temp/2/
           mkdir temp/3/
