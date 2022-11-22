@@ -138,13 +138,12 @@ jobs:
             mv TestResults/**/coverage.cobertura.xml temp/1/
             mv TestResults/**/coverage.cobertura.xml temp/2/
             mv TestResults/**/coverage.cobertura.xml temp/3/
-            touch needed.as
 
         - name: Build and analyze
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           run: |
-            dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.flex.cobertura.reportPaths=temp/1/coverage.cobertura.xml,temp/2/coverage.cobertura.xml,temp/3/coverage.cobertura.xml
+            dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.cobertura.reportPaths=temp/1/coverage.cobertura.xml,temp/2/coverage.cobertura.xml,temp/3/coverage.cobertura.xml
             dotnet build -c Release --no-restore
             dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
