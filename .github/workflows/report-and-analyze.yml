@@ -35,7 +35,7 @@ jobs:
               message: Tests run with ${{ steps.report-tests.outputs.passed }} passed and ${{ steps.report-tests.outputs.failed }} failed in ${{ steps.report-tests.outputs.time }}ms.
           
     analysis:
-        name: Analyze
+        name: Analyse
         runs-on: ubuntu-latest
         steps:
           - name: Set up JDK 11
