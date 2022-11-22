@@ -127,16 +127,13 @@ jobs:
           with:
             name: test-results
             path: ./TestResults
-            
-        - name: look
-          run: |
-            ls -l && ls -R -l TestResults
 
         - name: Build and analyze
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           run: |
-            dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths=TestResults/*/coverage.opencover.xml
+            ls -l && ls -R -l TestResults
+            dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="TestResults/*/coverage.opencover.xml"
             dotnet build -c Release --no-restore
             dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
