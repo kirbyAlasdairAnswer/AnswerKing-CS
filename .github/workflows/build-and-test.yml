@@ -130,7 +130,7 @@ jobs:
             
         - name: look
           run: |
-            ls -l && ls -l TestResults
+            ls -l && ls -R -l TestResults
 
 #        - name: Build and analyze
 #env:
