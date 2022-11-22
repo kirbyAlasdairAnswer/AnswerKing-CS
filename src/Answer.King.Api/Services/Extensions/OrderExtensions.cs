@@ -107,6 +107,11 @@ public static class OrderExtensions
         return quantityAddRemoveActions.Where(action => action.QuantityDifference > 0).ToList();
     }
 
+    private static string DoNothing ()
+    {
+        return "a";
+    }
+
     private class AddRemoveUpdateAction
     {
         /// <summary>
