@@ -28,7 +28,16 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           run_id: ${{ github.event.workflow_run.id }}
           workflow: build-and-test.yml
-          name: preview-build
+          name: preview-build      
+          
+      - name: 'Extract build artifact'
+        run: tar -xf artifact.tar.zst
+
+      - name: 'Restore preserved ENV'
+        run: |
+          cat pr.env >> "${GITHUB_ENV}"
+          ls
+          ls -R
 
       - name: Report Tests
         id: report-tests
@@ -38,15 +47,6 @@ jobs:
           path: "**.trx"
           reporter: dotnet-trx
           
-      - name: 'Extract test artifact'
-        run: tar -xf artifact.tar.zst
-          
-      - name: 'Extract build artifact'
-        run: tar -xf artifact.tar.zst
-
-      - name: 'Restore preserved ENV'
-        run: cat pr.env >> "${GITHUB_ENV}"
-
       - name: Add Test Result PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
@@ -58,11 +58,28 @@ jobs:
   analysis:
       name: Analyse
       runs-on: ubuntu-latest
-      steps:            
+      steps:
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-            
+        
+         - name: download env
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow: build-and-test.yml
+          name: preview-build      
+          
+      - name: 'Extract build artifact'
+        run: tar -xf artifact.tar.zst
+
+      - name: 'Restore preserved ENV'
+        run: |
+          cat pr.env >> "${GITHUB_ENV}"
+          ls
+          ls -R
+
         - name: cache
           uses: actions/cache@v3
           with:
