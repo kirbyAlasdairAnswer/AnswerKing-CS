@@ -1,6 +1,7 @@
 name: Stage Two
 
 on:
+  workflow_call:
   workflow_run:
       workflows: ["Build"]
       types:
