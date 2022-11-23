@@ -85,11 +85,13 @@ jobs:
           run: |
             dotnet tool install --global dotnet-sonarscanner
             
-        - name: download test results
-          uses: actions/download-artifact@v3
+        - name: download env
+          uses: dawidd6/action-download-artifact@v2
           with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            run_id: ${{ github.event.workflow_run.id }}
+            workflow: build-and-test.yml
             name: test-results
-            path: ./TestResults
 
         - name: Build and analyze
           env:
