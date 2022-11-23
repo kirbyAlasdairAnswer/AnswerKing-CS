@@ -1,4 +1,4 @@
-name: Build
+name: Buildy
 
 on:
   push:
