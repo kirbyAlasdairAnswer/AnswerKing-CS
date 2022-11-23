@@ -16,3 +16,4 @@ jobs:
     name: pretend the Second workflow
     needs: first
     uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/report-and-analyze.yml@main
+    secrets: inherit
