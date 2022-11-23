@@ -38,9 +38,6 @@ jobs:
           path: "**.trx"
           reporter: dotnet-trx
           
-      - name: 'Extract test artifact'
-        run: tar -xf artifact.tar.zst
-          
       - name: 'Extract build artifact'
         run: tar -xf artifact.tar.zst
 
