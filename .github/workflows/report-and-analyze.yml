@@ -2,110 +2,100 @@ name: Stage Two
 
 on:
   workflow_run:
-      workflows: ["Stage One"]
+      workflows: ["Build"]
       types:
         - completed
       
 jobs:
-    report:
-        name: Report Tests
-        runs-on: ubuntu-latest
-        steps:      
-          - uses: actions/checkout@v3
-          - name: download test results
-            uses: actions/download-artifact@v2
-            with:
-              name: test-results
-              path: ./TestResults
-
-          - name: Report Tests
-            id: report-tests
-            uses: dorny/test-reporter@v1
-            with:
-              name: .Net Tests
-              path: "**.trx"
-              reporter: dotnet-trx
-
-          - name: Add Test Result PR Comment
-            uses: marocchino/sticky-pull-request-comment@v2
-            if: github.event_name == 'pull_request'
-            with:
-              hide_and_recreate: true
-              hide_classify: "OUTDATED"
-              message: Tests run with ${{ steps.report-tests.outputs.passed }} passed and ${{ steps.report-tests.outputs.failed }} failed in ${{ steps.report-tests.outputs.time }}ms.
+  integration-test:
+    name: Report Tests
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v3
+        
+      - name: download test results
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow: build-and-test.yml
+          name: test-results
           
-    analysis:
-        name: Analyse
-        runs-on: ubuntu-latest
-        steps:
-          - name: Set up JDK 11
-            uses: actions/setup-java@v1
-            with:
-              java-version: 1.11
-          - uses: actions/checkout@v3
-            with:
-              fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-          - name: cache
-            uses: actions/cache@v3
-            with:
-              path: |
-                ~/.nuget/packages
-                !~/.nuget/packages/unwanted
-              key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-              restore-keys: |
-                ${{ runner.os }}-nuget-
-          - name: Setup .NET Core
-            uses: actions/setup-dotnet@v3
-            with:
-              global-json-file: global.json
+      - name: download env
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+          workflow: build-and-test.yml
+          name: preview-build
 
-          - name: Install dependencies
-            run: dotnet restore --locked-mode
+      - name: Report Tests
+        id: report-tests
+        uses: dorny/test-reporter@v1
+        with:
+          name: .Net Tests
+          path: "**.trx"
+          reporter: dotnet-trx
+          
+      - name: 'Extract test artifact'
+        run: tar -xf artifact.tar.zst
+          
+      - name: 'Extract build artifact'
+        run: tar -xf artifact.tar.zst
 
-          - name: Cache SonarCloud packages
-            uses: actions/cache@v3
-            with:
-              path: ~\sonar\cache
-              key: ${{ runner.os }}-sonar
-              restore-keys: ${{ runner.os }}-sonar
+      - name: 'Restore preserved ENV'
+        run: cat pr.env >> "${GITHUB_ENV}"
 
-          - name: Cache SonarCloud scanner
-            id: cache-sonar-scanner
-            uses: actions/cache@v3
-            with:
-              path: .\.sonar\scanner
-              key: ${{ runner.os }}-sonar-scanner
-              restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Add Test Result PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          hide_and_recreate: true
+          hide_classify: "OUTDATED"
+          message: Tests run with ${{ steps.report-tests.outputs.passed }} passed and ${{ steps.report-tests.outputs.failed }} failed in ${{ steps.report-tests.outputs.time }}ms.
+          
+  analysis:
+      name: Analyse
+      runs-on: ubuntu-latest
+      steps:            
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+            
+        - name: cache
+          uses: actions/cache@v3
+          with:
+            path: |
+              ~/.nuget/packages
+              !~/.nuget/packages/unwanted
+            key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+            restore-keys: |
+              ${{ runner.os }}-nuget-
+              
+        - name: Setup .NET Core
+          uses: actions/setup-dotnet@v3
+          with:
+            global-json-file: global.json
 
-          - name: Install SonarCloud scanners
-            run: |
-              dotnet tool install --global dotnet-sonarscanner
+        - name: Install dependencies
+          run: dotnet restore --locked-mode
 
-          - name: download test results
-            uses: actions/download-artifact@v2
-            with:
-              name: test-results
-              path: ./TestResults
+        - name: Install SonarCloud scanners
+          run: |
+            dotnet tool install --global dotnet-sonarscanner
+            
+        - name: download test results
+          uses: actions/download-artifact@v3
+          with:
+            name: test-results
+            path: ./TestResults
 
-          - name: restructure
-            continue-on-error: true
-            run: |
-              mkdir temp/
-              mkdir temp/1/
-              mkdir temp/2/
-              mkdir temp/3/
-              mv TestResults/**/coverage.cobertura.xml temp/1/
-              mv TestResults/**/coverage.cobertura.xml temp/2/
-              mv TestResults/**/coverage.cobertura.xml temp/3/
-              cd ..
-              ls
-              ls temp -R
-
-          - name: Build and analyze
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-              SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-            run: |
-              dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.flex.cobertura.reportPaths=temp/1/coverage.cobertura.xml,temp/2/coverage.cobertura.xml,temp/3/coverage.cobertura.xml
-              dotnet build -c Release --no-restore
-              dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        - name: Build and analyze
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          run: |
+            dotnet-sonarscanner begin /k:"AnswerKing" /o:"kirbyalasdairanswer" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="TestResults/*/coverage.opencover.xml"
+            dotnet build -c Release --no-restore
+            dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
