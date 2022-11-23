@@ -1,0 +1,17 @@
+name: pull request
+
+on:
+  push:
+  pull_request:
+    - main
+    - develop
+    
+jobs:
+  first:
+      name: pretend the First workflow
+      uses: kirbyAlasdairAnswer/AnswerKing-CS/new/main/.github/workflows/build-and-test.yml@main
+
+    second:
+      name: pretend the Second workflow
+      needs: first
+      uses: kirbyAlasdairAnswer/AnswerKing-CS/new/main/.github/workflows/report-and-analyze.yml@main
