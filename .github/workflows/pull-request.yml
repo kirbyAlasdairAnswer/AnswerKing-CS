@@ -3,6 +3,9 @@ name: pull request
 on:
   push:
   pull_request:
+    branches:
+      - develop
+      - main
     
 jobs:
   first:
