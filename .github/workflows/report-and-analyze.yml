@@ -1,4 +1,4 @@
-name: Pull Request Jobs
+name: Report and Analyse
 
 on:
   workflow_call:
