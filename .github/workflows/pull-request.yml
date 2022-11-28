@@ -1,4 +1,4 @@
-name: pull request
+name: Workflow Run Manager
 
 on:
   push:
