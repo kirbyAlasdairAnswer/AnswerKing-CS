@@ -10,11 +10,11 @@ on:
 jobs:
   first:
     name: pretend the First workflow
-    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/build-and-test.yml@main
+    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/@{GITHUB_SHA}
 
   second:
     name: pretend the Second workflow
     needs: first
     if: github.event_name == 'pull_request'
-    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/report-and-analyze.yml@main
+    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/report-and-analyze.yml@{GITHUB_SHA}
     secrets: inherit
