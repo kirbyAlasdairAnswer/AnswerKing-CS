@@ -41,19 +41,3 @@ jobs:
           path: |
             ./TestResults/*.trx
             ./TestResults/**/coverage.opencover.xml
-            
-      - name: Prepare artifact for transfer
-        run: |
-          # Save ENV needed for actions in secure workflow
-          echo "PR_HEADSHA=${{ github.event.pull_request.head.sha }}" >> pr.env
-          echo "PR_NUMBER=${{ github.event.pull_request.number }}"    >> pr.env
-          echo "PR_TITLE=${{ github.event.pull_request.title }}"      >> pr.env
-          echo "BUILD_DIR=${{ env.BUILD_DIR }}"                       >> pr.env
-
-          tar --zstd -cf artifact.tar.zst pr.env ${{ env.BUILD_DIR }}
-
-      - name: Upload artifact for workflow transfer
-        uses: actions/upload-artifact@v3
-        with:
-          name: preview-build
-          path: artifact.tar.zst
