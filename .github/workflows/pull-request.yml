@@ -1,7 +1,6 @@
 name: Workflow Run Manager
 
 on:
-  push:
   pull_request:
     
 jobs:
