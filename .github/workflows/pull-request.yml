@@ -1,7 +1,11 @@
 name: Workflow Run Manager
 
 on:
+  push:
   pull_request:
+    branches:
+      - main
+      - develop
     
 jobs:
   first:
