@@ -14,10 +14,9 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          run_id: ${{ github.event.workflow_call.id }}
           workflow: build-and-test.yml
           name: test-results
-          search_artifacts: true
+          search_artifacts: true          
 
       - name: Report Tests
         id: report-tests
