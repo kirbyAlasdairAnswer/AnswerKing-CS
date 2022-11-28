@@ -52,6 +52,36 @@ public class ProductsController : ControllerBase
         return this.Ok(product);
     }
 
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Product), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetOn3e (Guid id)
+    {
+        var product = await this.Products.GetProduct(id);
+
+        if (product == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.Ok(product);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(Product), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetO2ne (Guid id)
+    {
+        var product = await this.Products.GetProduct(id);
+
+        if (product == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.Ok(product);
+    }
+
     /// <summary>
     /// Create a new product.
     /// </summary>
