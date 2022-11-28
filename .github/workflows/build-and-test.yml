@@ -57,4 +57,3 @@ jobs:
         with:
           name: preview-build
           path: artifact.tar.zst
-          retention-days: 1
