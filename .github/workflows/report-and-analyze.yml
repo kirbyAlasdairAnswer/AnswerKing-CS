@@ -17,6 +17,7 @@ jobs:
           run_id: ${{ github.event.workflow_call.id }}
           workflow: build-and-test.yml
           name: test-results
+          search_artifacts: true
           
       - name: download env
         uses: dawidd6/action-download-artifact@v2
@@ -25,6 +26,7 @@ jobs:
           run_id: ${{ github.event.workflow_call.id }}
           workflow: build-and-test.yml
           name: preview-build
+          search_artifacts: true
 
       - name: Report Tests
         id: report-tests
@@ -88,6 +90,7 @@ jobs:
             run_id: ${{ github.event.workflow_call.id }}
             workflow: build-and-test.yml
             name: test-results
+            search_artifacts: true
 
         - name: Build and analyze
           env:
