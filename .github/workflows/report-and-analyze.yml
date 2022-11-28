@@ -15,7 +15,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build-and-test.yml
-          name: test-results
+          name: test-results-${{ github.sha }}
           search_artifacts: true          
 
       - name: Report Tests
@@ -68,9 +68,8 @@ jobs:
           uses: dawidd6/action-download-artifact@v2
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
-            run_id: ${{ github.event.workflow_call.id }}
             workflow: build-and-test.yml
-            name: test-results
+            name: test-results-${{ github.sha }}
             search_artifacts: true
 
         - name: Build and analyze
