@@ -1,4 +1,4 @@
-name: Stage Two
+name: Pull Request Jobs
 
 on:
   workflow_call:
@@ -15,8 +15,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: build-and-test.yml
-          name: test-results
-          search_artifacts: true          
+          name: test-results-${{ github.sha }}
+
 
       - name: Report Tests
         id: report-tests
@@ -64,14 +64,12 @@ jobs:
           run: |
             dotnet tool install --global dotnet-sonarscanner
             
-        - name: download env
+        - name: download test reports
           uses: dawidd6/action-download-artifact@v2
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
-            run_id: ${{ github.event.workflow_call.id }}
             workflow: build-and-test.yml
-            name: test-results
-            search_artifacts: true
+            name: test-results-${{ github.sha }}
 
         - name: Build and analyze
           env:
