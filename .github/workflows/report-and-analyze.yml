@@ -25,15 +25,6 @@ jobs:
           name: .Net Tests
           path: "**.trx"
           reporter: dotnet-trx
-          
-      - name: 'Extract test artifact'
-        run: tar -xf artifact.tar.zst
-          
-      - name: 'Extract build artifact'
-        run: tar -xf artifact.tar.zst
-
-      - name: 'Restore preserved ENV'
-        run: cat pr.env >> "${GITHUB_ENV}"
 
       - name: Add Test Result PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
