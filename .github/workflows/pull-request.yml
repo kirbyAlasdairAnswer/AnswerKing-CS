@@ -10,7 +10,7 @@ on:
 jobs:
   first:
     name: pretend the First workflow
-    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/@{GITHUB_SHA}
+    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/build-and-test.yml@{GITHUB_SHA}
 
   second:
     name: pretend the Second workflow
