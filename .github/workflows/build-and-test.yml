@@ -37,7 +37,7 @@ jobs:
       - name: upload TestResults
         uses: actions/upload-artifact@v3
         with:
-          name: test-results
+          name: test-results-${{ github.sha }}
           path: |
             ./TestResults/*.trx
             ./TestResults/**/coverage.opencover.xml
