@@ -98,7 +98,7 @@ public class CategoryServiceTests
 
         // Assert
         Assert.Equal(category, actualCategory);
-        await this.CategoryRepository.Received().Get(5);
+        await this.CategoryRepository.Received().Get(new Guid());
     }
 
     [Fact]
