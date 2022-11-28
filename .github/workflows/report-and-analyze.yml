@@ -63,7 +63,7 @@ jobs:
           run: |
             dotnet tool install --global dotnet-sonarscanner
             
-        - name: download env
+        - name: download test reports
           uses: dawidd6/action-download-artifact@v2
           with:
             github_token: ${{ secrets.GITHUB_TOKEN }}
