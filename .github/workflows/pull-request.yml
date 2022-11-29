@@ -1,4 +1,4 @@
-name: pull request
+name: manage workflows
 
 on:
   push:
@@ -8,13 +8,8 @@ on:
       - develop
     
 jobs:
-  first:
-    name: pretend the First workflow
-    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/build-and-test.yml@main
-
-  second:
-    name: pretend the Second workflow
-    needs: first
+  pull-request:
+    name: test, report and anlayse
     if: github.event_name == 'pull_request'
-    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/report-and-analyze.yml@main
+    uses: ./.github/workflows/build-and-test.yml
     secrets: inherit

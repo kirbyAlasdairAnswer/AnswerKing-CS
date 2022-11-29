@@ -1,4 +1,4 @@
-name: Pull Request Jobs
+name: Report and Analyse
 
 on:
   workflow_call:
@@ -11,11 +11,11 @@ jobs:
       - uses: actions/checkout@v3
         
       - name: download test results
-        uses: dawidd6/action-download-artifact@v2
+        uses: actions/cache@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: build-and-test.yml
-          name: test-results-${{ github.sha }}
+          path: |
+            ./TestResults/*.trx
+          key: test-results-${{ github.sha }}
 
 
       - name: Report Tests
@@ -64,12 +64,12 @@ jobs:
           run: |
             dotnet tool install --global dotnet-sonarscanner
             
-        - name: download test reports
-          uses: dawidd6/action-download-artifact@v2
+        - name: download test results
+          uses: actions/cache@v3
           with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            workflow: build-and-test.yml
-            name: test-results-${{ github.sha }}
+            path: |
+              ./TestResults/*/coverage.opencover.xml
+            key: test-results-${{ github.sha }}
 
         - name: Build and analyze
           env:

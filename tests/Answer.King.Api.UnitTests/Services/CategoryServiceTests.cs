@@ -102,6 +102,24 @@ public class CategoryServiceTests
     }
 
     [Fact]
+    public async void GetCategoryRepeat_ValdidCategoryId_ReturnsCategory ()
+    {
+        // Arrange
+        var category = new Category("category", "desc");
+        var id = category.Id;
+
+        this.CategoryRepository.Get(id).Returns(category);
+
+        // Act
+        var sut = this.GetServiceUnderTest();
+        var actualCategory = await sut.GetCategory(id);
+
+        // Assert
+        Assert.Equal(category, actualCategory);
+        await this.CategoryRepository.Received().Get(id);
+    }
+
+    [Fact]
     public async void GetCategories_ReturnsAllCategories()
     {
         // Arrange
