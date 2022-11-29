@@ -16,5 +16,5 @@ jobs:
     name: pretend the Second workflow
     needs: first
     if: github.event_name == 'pull_request'
-    uses: kirbyAlasdairAnswer/AnswerKing-CS/.github/workflows/report-and-analyze.yml@main
+    uses: ./.github/workflows/report-and-analyze.yml
     secrets: inherit
