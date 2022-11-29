@@ -35,9 +35,9 @@ jobs:
         run: dotnet test -c Release --no-restore --collect:"XPlat Code Coverage" --logger "trx;LogFilePrefix=TestResults" -r TestResults -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: upload TestResults
-        uses: actions/cache@v3
+        uses: actions/upload-artifact@v3
         with:
-          key: test-results-${{ github.sha }}
+          name: test-results-${{ github.sha }}
           path: |
             ./TestResults/*.trx
             ./TestResults/**/coverage.opencover.xml
