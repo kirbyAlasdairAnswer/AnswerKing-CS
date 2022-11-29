@@ -8,13 +8,8 @@ on:
       - develop
     
 jobs:
-  first:
-    name: pretend the First workflow
-    uses: ./.github/workflows/build-and-test.yml
-
-  second:
-    name: pretend the Second workflow
-    needs: first
+  pull-request:
+    name: test, report and anlayse
     if: github.event_name == 'pull_request'
-    uses: ./.github/workflows/report-and-analyze.yml
+    uses: ./.github/workflows/build-and-test.yml
     secrets: inherit
