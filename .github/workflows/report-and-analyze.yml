@@ -14,6 +14,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           workflow: build-and-test.yml
+          check_artifacts: true
           name: test-results-${{ github.sha }}
 
 
@@ -62,14 +63,10 @@ jobs:
         - name: Install SonarCloud scanners
           run: |
             dotnet tool install --global dotnet-sonarscanner
-        
-        - name: runs in f
-          run: echo 'l'
             
         - name: download test reports
           uses: dawidd6/action-download-artifact@v2
           with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
             name: test-results-${{ github.sha }}
 
         - name: Build and analyze
